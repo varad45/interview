@@ -7,14 +7,26 @@ import Test from "./Components/Test";
 import Final from "./Components/Final";
 function App() {
   const [post, setPost] = useState(null);
+
   useEffect(() => {
+    let fetchDone = false;
     axios
       .get(`http://interviewapi.stgbuild.com/getQuizData`)
       .then((res) => {
         setPost(res.data);
+        fetchDone = true;
       })
       .catch((err) => console.log(err));
+    if (!fetchDone) {
+      axios
+        .get(`./data.json`)
+        .then((res) => {
+          setPost(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
+
   return (
     <div className="App">
       <BrowserRouter>
